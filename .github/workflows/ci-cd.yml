@@ -49,5 +49,5 @@ jobs:
             --platform managed \
             --allow-unauthenticated \
             --max-instances=3 \
-            --service-account=github-workflow-deployer@${{ env.PROJECT_ID }}.iam.gserviceaccount.com
+            --service-account=github-workflow-deployer@${{ env.PROJECT_ID }}.iam.gserviceaccount.com \
             --set-secrets=SERVICE_ACCOUNT_KEY_JSON=SERVICE_ACCOUNT_KEY_JSON:latest
