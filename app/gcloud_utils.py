@@ -4,6 +4,13 @@ import asyncio
 import os
 
 
+key_content = os.getenv("SERVICE_ACCOUNT_KEY_JSON")
+if key_content:
+    key_path = "/tmp/key.json"
+    with open(key_path, "w") as f:
+        f.write(key_content)
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = key_path
+
 # os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'axiomatic-skill-458008-j5-61eabbfa819f.json'
 BUCKET_NAME = "interviu-task"
 
