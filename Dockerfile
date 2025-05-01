@@ -11,6 +11,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copiază codul aplicației
 COPY ./app ./app
 
+COPY axiomatic-skill-458008-j5-6ccd088d7a48.json /creds/key.json
+ENV GOOGLE_APPLICATION_CREDENTIALS=/creds/key.json
+
 # Expune portul default FastAPI
 EXPOSE 8080
 
