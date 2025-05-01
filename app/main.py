@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi import FastAPI, UploadFile, File, HTTPException, Body
 from app import gcloud_utils
 
 app = FastAPI()
@@ -26,6 +26,12 @@ async def delete_file(name: str):
         raise HTTPException(status_code = 404, detail = "File not found")
     return {"filename": deleted_filename}
 
+@app.put("/files/{old_name}")
+async def rename_file(old_name: str, new_name: str = Body(..., embed = True)):
+    result = await gcloud_utils.rename_file(old_name, new_name)
+    if not result:
+        raise HTTPException(status_code = 404, detail = "Original file not found")
+    return {"filename": result}
 
 
 

@@ -46,3 +46,16 @@ async def delete_file(blob_name):
         return None
     await run_in_thread(blob.delete)
     return blob_name
+
+async def rename_file(old_name, new_name):
+    old_blob = bucket.blob(old_name)
+    new_blob = bucket.blob(new_name)
+
+    exists = await run_in_thread(old_blob.exists)
+    if not exists:
+        return None
+    
+    await run_in_thread(bucket.copy_blob, old_blob, bucket, new_name)
+    await run_in_thread(old_blob.delete)
+
+    return new_name
