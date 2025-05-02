@@ -1,12 +1,15 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException, Body
 from app import gcloud_utils
 
+# initializeaza fastapi-ul
 app = FastAPI()
 
+# Endpoint pentru listarea fisierelor din bucket
 @app.get("/files")
 async def list_files():
     return await gcloud_utils.list_files()
 
+# Returneaza URL semnat pentru un fiser dat
 @app.get("/files/{name}")
 async def get_file_url(name: str):
     url = await gcloud_utils.get_signed_url(name)
@@ -14,11 +17,13 @@ async def get_file_url(name: str):
         raise HTTPException(status_code = 404, detail = "File not found")
     return {"url": url}
 
+# Upload fiser 
 @app.post("/files")
 async def upload_file(file: UploadFile = File(...)):
     filename = await gcloud_utils.upload_file(file)
     return {"filename": filename}
 
+# Sterge fisier dupa nume
 @app.delete("/files/{name}")
 async def delete_file(name: str):
     deleted_filename = await gcloud_utils.delete_file(name)
@@ -26,6 +31,7 @@ async def delete_file(name: str):
         raise HTTPException(status_code = 404, detail = "File not found")
     return {"filename": deleted_filename}
 
+# Redenumeste fisier cu new_name in body
 @app.put("/files/{old_name}")
 async def rename_file(old_name: str, new_name: str = Body(..., embed = True)):
     result = await gcloud_utils.rename_file(old_name, new_name)
