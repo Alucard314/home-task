@@ -25,6 +25,8 @@ async def run_in_thread(func, *args, **kwargs):
     loop = asyncio.get_running_loop()
     with ThreadPoolExecutor() as pool:
         return await loop.run_in_executor(pool, lambda: func(*args, **kwargs))
+    
+
 
 # returneasa lista tuturor fisierelor din bucket
 async def list_files():
